@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi novia?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffd6e8 0%, #fff0f5 50%, #ffe6f0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+            position: relative;
+        }
+
+        .crown {
+            font-size: 50px;
+            margin: 0 10px;
+            animation: bounce 2s infinite;
+        }
+
+        .hello-kitty {
+            font-size: 40px;
+            margin: 10px;
+            animation: spin 3s infinite linear;
+        }
+
+        .decorations {
+            margin: 20px 0;
+        }
+
+        .kitty-image {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .kitty-image img {
+            width: 200px;
+            height: auto;
+            max-width: 100%;
+            filter: drop-shadow(0 8px 16px rgba(255, 192, 203, 0.4));
+            animation: bounceKitty 2s infinite;
+        }
+
+        @keyframes bounceKitty {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #ff1493;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(255, 192, 203, 0.5);
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #ff69b4;
+            margin: 15px 0 40px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #noBtn {
+            background-color: #87ceeb;
+            color: white;
+        }
+
+        #noBtn:hover {
+            background-color: #5dade2;
+            transform: scale(1.05);
+        }
+
+        #siBtn {
+            background-color: #ff1493;
+            color: white;
+            font-size: 20px;
+            padding: 15px 40px;
+        }
+
+        #siBtn:hover {
+            background-color: #ff69b4;
+        }
+
+        .message {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #ff1493;
+            font-weight: bold;
+            min-height: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hearts {
+            position: absolute;
+            font-size: 30px;
+            animation: float 3s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .success {
+            display: none;
+            margin-top: 30px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="kitty-image">
+            <img src="https://co.pinterest.com/pin/389702174025541288/" alt="Hello Kitty">
+        </div>
+
+        <div class="decorations">
+            <span class="crown">👑</span>
+            <span class="hello-kitty">🎀</span>
+            <span class="crown">👑</span>
+        </div>
+
+        <h1>¿Quieres ser mi novia?</h1>
+        <p class="subtitle">� Pregunta de Hello Kitty 💙</p>
+
+        <div class="buttons">
+            <button id="noBtn">No 😢</button>
+            <button id="siBtn">¡Sí! �</button>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="success" id="success">
+            <h2>¡YESSS! 🎉🎉🎉</h2>
+            <div class="decorations">
+                <span class="hello-kitty">🎀</span>
+                <span class="crown">👑</span>
+                <span class="hello-kitty">🎀</span>
+            </div>
+            <p style="font-size: 28px; color: #ff1493; margin-top: 20px;">
+                ¡Eres la chica más linda! �👑✨
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let size = 20;
+        let clickCount = 0;
+
+        const noBtn = document.getElementById('noBtn');
+        const siBtn = document.getElementById('siBtn');
+        const message = document.getElementById('message');
+        const success = document.getElementById('success');
+
+        const messages = [
+            '¿Segura? 👀',
+            '¡Piénsalo bien! 💭',
+            '¡Vamos, dime que sí! 😊',
+            '¡El sí es más grande! 📈',
+            '¡Casi! ¡Presiona el sí! 🎯',
+            '¡Dale, yo sé que quieres! 😄',
+        ];
+
+        noBtn.addEventListener('click', () => {
+            clickCount++;
+            size += 30;
+            siBtn.style.fontSize = (20 + size) + 'px';
+            siBtn.style.padding = (15 + size/3) + 'px ' + (40 + size/2) + 'px';
+
+            if (clickCount <= messages.length) {
+                message.textContent = messages[clickCount - 1];
+            } else {
+                message.textContent = '¡El botón "Sí" es ENORME! 🚀 ¡Presiona ya!';
+            }
+
+            createHearts();
+        });
+
+        siBtn.addEventListener('click', () => {
+            noBtn.style.display = 'none';
+            message.textContent = '';
+            success.style.display = 'block';
+            siBtn.style.display = 'none';
+            launchConfetti();
+        });
+
+        function createHearts() {
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('hearts');
+                heart.textContent = '�';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = window.innerHeight + 'px';
+                document.body.appendChild(heart);
+
+                setTimeout(() => heart.remove(), 3000);
+            }
+        }
+
+        function launchConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.textContent = Math.random() > 0.5 ? '👑' : '🎀';
+                confetti.style.position = 'fixed';
+                confetti.style.fontSize = '30px';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-50px';
+                confetti.style.animation = `float ${2 + Math.random() * 2}s infinite`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+    </script>
+</body>
+</html>
